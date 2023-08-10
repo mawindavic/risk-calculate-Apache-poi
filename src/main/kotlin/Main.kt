@@ -24,14 +24,14 @@ data class RatingRow(
 fun main(args: Array<String>) {
     println("Hello World!")
 
-    val rate = riskRatePricingRate(rate = baseRateValue, term = 12, principal = 100000.0)
+    val rate = riskPricingRate(rate = baseRateValue, term = 12, principal = 100000.0)
     println("Rate: $rate")
 
 }
 
-private fun riskRatePricingRate(rate: Double, term: Int, principal: Double): Double {
+private fun riskPricingRate(rate: Double, term: Int, principal: Double): Double {
     val payment = monthlyPayment(rate = rate, term = term, principal = principal).roundToInt()
-    val interests: MutableList<Int> = mutableListOf()
+  //  val interests: MutableList<Int> = mutableListOf()
     val rows: MutableList<RatingRow> = mutableListOf()
     var mBalance = principal
     for (i in 1..term) {
@@ -40,7 +40,7 @@ private fun riskRatePricingRate(rate: Double, term: Int, principal: Double): Dou
         val coc = costOfCapital(roe = roEValue, balance = mBalance)
         val cr = creditRisk(pd = pdValue, lgd = lgdValue, balance = mBalance)
         val interest = (cof + coc + cr).roundToInt()
-        interests.add(interest)
+      //  interests.add(interest)
         mBalance = mBalance - (payment - interest)
         rows.add(
             RatingRow(
@@ -58,7 +58,7 @@ private fun riskRatePricingRate(rate: Double, term: Int, principal: Double): Dou
 
     return if (mBalance < 0) rate.also {
         println(rows.joinToString("\n"))
-    } else riskRatePricingRate(
+    } else riskPricingRate(
         rate = rate.plus(rateChange),
         term = term,
         principal = principal
